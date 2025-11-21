@@ -6,7 +6,8 @@ export const votaciones = [
     votos: 124,
     fechaFin: "2025-11-10",
     estado: "activa",
-    badge: "Nueva"
+    badge: "Activa",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   },
   {
     id: 2,
@@ -15,7 +16,8 @@ export const votaciones = [
     votos: 89,
     fechaFin: "2025-11-01",
     estado: "activa",
-    badge: "Nueva"
+    badge: "Activa",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   },
   {
     id: 3,
@@ -24,7 +26,8 @@ export const votaciones = [
     votos: 45,
     fechaFin: "2025-10-15",
     estado: "cerrada",
-    badge: "Cerrada"
+    badge: "Cerrada",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   },
   {
     id: 4,
@@ -33,7 +36,8 @@ export const votaciones = [
     votos: 0,
     fechaFin: "2025-11-14",
     estado: "programada",
-    badge: "Programada"
+    badge: "Programada",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   },
   {
     id: 5,
@@ -42,7 +46,8 @@ export const votaciones = [
     votos: 156,
     fechaFin: "2025-09-20",
     estado: "cerrada",
-    badge: "Cerrada"
+    badge: "Cerrada",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   },
   {
     id: 6,
@@ -51,6 +56,7 @@ export const votaciones = [
     votos: 67,
     fechaFin: "2025-11-05",
     estado: "activa",
-    badge: "Activa"
+    badge: "Activa",
+    image: "https://placehold.co/600x400?text=No+Imagen"
   }
 ];

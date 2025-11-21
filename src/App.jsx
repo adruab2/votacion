@@ -3,7 +3,6 @@ import AdminLogin from "./pages/AdminLogin";
 import UserLogin from "./pages/UserLogin";
 import AdminPanelVoto from "./pages/AdminPanelVoto";
 import UserPanelVoto from "./pages/UserPanelVoto";
-import PanelVotacionesPage from "./pages/PanelVotacionesPage";
 import VotacionVista from "./pages/VotacionVista";
 
 
@@ -16,9 +15,8 @@ function App() {
 
         <Route path="/user/vota" element={<VotacionVista />} />
 
-        <Route path="/admin/PanelVoto" element={<AdminPanelVoto />} />
-        <Route path="/user/PanelVoto" element={<UserPanelVoto />} />
-        <Route path="/panel-votaciones" element={<PanelVotacionesPage />} />
+        <Route path="/admin/panel-voto" element={<AdminPanelVoto />} />
+        <Route path="/user/panel-voto" element={<UserPanelVoto />} />
       </Routes>
     </BrowserRouter>
   );
