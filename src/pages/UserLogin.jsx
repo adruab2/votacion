@@ -1,25 +1,43 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { users } from "../data/authData";
+import { useState, useEffect } from "react";
 import "./../styles/Login.css";
 
 export default function UserLogin() {
-  const navigate = useNavigate();
-
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
+  const [remember, setRemember] = useState(false);
 
-  const handleLogin = () => {
-    const user = users.find(
-      (u) => u.dni === dni && u.password === password
-    );
+  // Load data ONLY if it exists
+  useEffect(() => {
+    const saved = localStorage.getItem("userData");
 
-    if (user) {
-      navigate("/user/PanelVoto");
-    } else {
-      alert("Datos incorrectos");
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      setDni(parsed.dni);
+      setPassword(parsed.password);
+      setRemember(true);
     }
-  };
+  }, []);
+
+  function handleLogin() {
+    // VALIDATION – prevent empty login
+    if (dni.trim() === "" || password.trim() === "") {
+      alert("Debes llenar todos los campos.");
+      return;
+    }
+
+    // Save only when checkbox is active AND fields are not empty
+    if (remember) {
+      localStorage.setItem(
+        "userData",
+        JSON.stringify({ dni, password })
+      );
+    } else {
+      localStorage.removeItem("userData");
+    }
+
+    // Redirect if login OK
+    window.location.href = "/user/PanelVoto";
+  }
 
   return (
     <div className="page-wrapper">
@@ -30,15 +48,25 @@ export default function UserLogin() {
 
         <div className="form-container">
           <label>DNI:</label>
-          <input type="text" value={dni}
-            onChange={(e) => setDni(e.target.value)} />
+          <input
+            type="text"
+            value={dni}
+            onChange={(e) => setDni(e.target.value)}
+          />
 
           <label>Contraseña:</label>
-          <input type="password" value={password}
-            onChange={(e) => setPassword(e.target.value)} />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <div className="checkbox-wrapper">
-            <input type="checkbox" />
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={() => setRemember(!remember)}
+            />
             <label>Recordarme</label>
           </div>
 
