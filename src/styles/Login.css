@@ -1,0 +1,91 @@
+/* Make root fill the screen */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Full page wrapper */
+.page-wrapper {
+  width: 100vw;
+  height: 100vh;
+  background: #1976ff; /* header background color */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make the card stretch the entire screen */
+.card {
+  width: 100%;
+  height: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Blue header fixed height */
+.card-header {
+  background: #1976ff;
+  width: 100%;
+  padding: 25px 0;
+  text-align: center;
+}
+
+.card-header h1 {
+  color: white;
+  font-size: 28px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Form fills the rest of the page */
+.form-container {
+  flex: 1;                  /* TAKES ALL REMAINING HEIGHT */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;  /* PERFECTLY CENTERED VERTICALLY */
+  gap: 18px;
+}
+
+/* Labels */
+.form-container label {
+  width: 230px;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
+}
+
+.form-container input {
+  width: 230px;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding-left: 8px;
+  outline: none;
+  background: #eeeeee;
+}
+
+.form-container button {
+  margin-top: 15px;
+  width: 140px;
+  padding: 8px 0;
+  border: none;
+  background: #1976ff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkbox-wrapper {
+  width: 230px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.checkbox-wrapper input {
+  width: 16px;
+  height: 16px;
+}
