@@ -2,12 +2,12 @@ import { useState } from "react";
 
 export default function VotacionVista() {
   const memes = [
-    { id: 1, title: "No Stress", img: "/meme1.jpg" },
-    { id: 2, title: "No Stress", img: "/meme1.jpg" },
-    { id: 3, title: "No Stress", img: "/meme1.jpg" },
-    { id: 4, title: "No Stress", img: "/meme1.jpg" },
-    { id: 5, title: "No Stress", img: "/meme1.jpg" },
-    { id: 6, title: "No Stress", img: "/meme1.jpg" }
+    { id: 1, title: "No Stress", img: "/meme1.jpeg" },
+    { id: 2, title: "No Stress", img: "/meme1.jpeg" },
+    { id: 3, title: "No Stress", img: "/meme1.jpeg" },
+    { id: 4, title: "No Stress", img: "/meme1.jpeg" },
+    { id: 5, title: "No Stress", img: "/meme1.jpeg" },
+    { id: 6, title: "No Stress", img: "/meme1.jpeg" }
   ];
 
   const [selected, setSelected] = useState(null);
