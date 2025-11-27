@@ -4,7 +4,7 @@ import UserLogin from "./pages/UserLogin";
 import AdminPanelVoto from "./pages/AdminPanelVoto";
 import UserPanelVoto from "./pages/UserPanelVoto";
 import VotacionVista from "./pages/VotacionVista";
-
+import CrearVotacion from "./pages/CrearVotacion";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
         <Route path="/user/vota" element={<VotacionVista />} />
 
         <Route path="/admin/panel-voto" element={<AdminPanelVoto />} />
+        <Route path="/admin/crear-votacion" element={<CrearVotacion />} />
         <Route path="/user/panel-voto" element={<UserPanelVoto />} />
       </Routes>
     </BrowserRouter>
