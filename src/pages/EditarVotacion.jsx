@@ -48,13 +48,20 @@ function EditarVotacion() {
     setForm({ ...form, candidatos: newList });
   };
 
+  const handleCandidatoFotoChange = (index, value) => {
+    const newList = [...form.candidatos];
+    newList[index].foto = value;
+    setForm({ ...form, candidatos: newList });
+  };
+
   const agregarCandidato = () => {
     const newCandidate = {
       id: form.candidatos.length > 0 
         ? Math.max(...form.candidatos.map(c => c.id)) + 1 
         : 1,
       nombre: "",
-      votos: 0
+      votos: 0,
+      foto: ""
     };
     setForm({ ...form, candidatos: [...form.candidatos, newCandidate] });
   };
@@ -143,18 +150,27 @@ function EditarVotacion() {
         <h2 className="text-xl font-semibold mb-2">Candidatos</h2>
 
         {form.candidatos.map((c, i) => (
-          <div key={c.id} className="flex items-center gap-2 mb-2">
+          <div key={c.id} className="flex flex-col gap-2 mb-2">
+            <div className="flex items-center gap-2">
+              <input
+                value={c.nombre}
+                onChange={(e) => handleCandidatoChange(i, e.target.value)}
+                className="flex-1 p-2 border rounded"
+                placeholder="Nombre del candidato"
+              />
+              <button
+                onClick={() => eliminarCandidato(c.id)}
+                className="bg-red-500 text-white px-3 py-1 rounded"
+              >
+                X
+              </button>
+            </div>
             <input
-              value={c.nombre}
-              onChange={(e) => handleCandidatoChange(i, e.target.value)}
-              className="flex-1 p-2 border rounded"
+              value={c.foto || ""}
+              onChange={(e) => handleCandidatoFotoChange(i, e.target.value)}
+              className="w-full p-2 border rounded"
+              placeholder="URL de la imagen"
             />
-            <button
-              onClick={() => eliminarCandidato(c.id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
-            >
-              X
-            </button>
           </div>
         ))}
 

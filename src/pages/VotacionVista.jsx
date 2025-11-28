@@ -6,16 +6,17 @@ export default function VotacionVista() {
   const navigate = useNavigate();
   const { votaciones, registrarVoto } = useVotaciones();
 
-  const [selectedVotes, setSelectedVotes] = useState({});
-  const [votadas, setVotadas] = useState({});
+  const [selectedVotes, setSelectedVotes] = useState({}); // guardará la selección por votación
+  const [votadas, setVotadas] = useState({}); // votaciones ya enviadas
 
+  // cargar votos previos desde localStorage
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("votosUsuario")) || {};
     setVotadas(stored);
   }, []);
 
   const handleSelect = (votacionId, candidatoId) => {
-    if (votadas[votacionId]) return;
+    if (votadas[votacionId]) return; // si ya votó, no permite seleccionar
     setSelectedVotes((prev) => ({ ...prev, [votacionId]: candidatoId }));
   };
 
@@ -33,6 +34,7 @@ export default function VotacionVista() {
 
     registrarVoto(votacionId, selected);
 
+    // marcar como votada
     const updatedVotadas = { ...votadas, [votacionId]: true };
     setVotadas(updatedVotadas);
     localStorage.setItem("votosUsuario", JSON.stringify(updatedVotadas));
@@ -40,10 +42,22 @@ export default function VotacionVista() {
     alert("¡Voto registrado!");
   };
 
+  // Función para ir a Resultados pasando el origen
+  const irAResultados = () => {
+    navigate("/votacion/resultados", { state: { from: "votacion" } });
+  };
+
   return (
     <div className="w-full min-h-screen bg-gray-100 flex flex-col items-center">
-      <div className="w-full bg-blue-500 py-6 text-center text-white text-3xl font-bold">
-        Sistema de Votación
+      {/* HEADER */}
+      <div className="w-full bg-blue-500 py-6 flex justify-between items-center px-6">
+        <h1 className="text-white text-3xl font-bold">Sistema de Votación</h1>
+        <button
+          onClick={irAResultados}
+          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+        >
+          Ver resultados
+        </button>
       </div>
 
       <div className="w-11/12 mt-8 space-y-16">
@@ -76,6 +90,7 @@ export default function VotacionVista() {
                     ${votadas[votacion.id] ? "opacity-50 cursor-not-allowed" : ""}
                   `}
                 >
+                  {/* IMAGEN DEL CANDIDATO */}
                   {cand.foto && (
                     <img
                       src={cand.foto}
@@ -84,6 +99,7 @@ export default function VotacionVista() {
                     />
                   )}
 
+                  {/* NOMBRE Y DESCRIPCIÓN */}
                   <div className="text-gray-700 flex flex-col items-center">
                     <p className="font-bold">{cand.nombre}</p>
                     <p className="text-sm">{cand.descripcion || "Candidato"}</p>
@@ -92,28 +108,18 @@ export default function VotacionVista() {
               ))}
             </div>
 
-            {/* BOTONES */}
-            <div className="flex gap-4 mt-6">
-              <button
-                onClick={() => handleSubmit(votacion.id)}
-                className={`px-8 py-2 rounded-full font-semibold ${
-                  votadas[votacion.id]
-                    ? "bg-gray-400 text-white cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-                disabled={votadas[votacion.id]}
-              >
-                {votadas[votacion.id] ? "Votación completada" : "Enviar"}
-              </button>
-
-              {/* BOTÓN VER RESULTADOS */}
-              <button
-                onClick={() => navigate("/votacion/resultados")}
-                className="px-6 py-2 rounded-full font-semibold bg-green-500 text-white hover:bg-green-600"
-              >
-                Ver resultados
-              </button>
-            </div>
+            {/* BOTÓN ENVIAR */}
+            <button
+              onClick={() => handleSubmit(votacion.id)}
+              className={`px-8 py-2 rounded-full font-semibold mt-6 ${
+                votadas[votacion.id]
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+              disabled={votadas[votacion.id]}
+            >
+              {votadas[votacion.id] ? "Votación completada" : "Enviar"}
+            </button>
           </div>
         ))}
       </div>

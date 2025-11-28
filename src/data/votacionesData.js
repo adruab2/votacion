@@ -8,9 +8,9 @@ export const votaciones = [
     badge: "Activa",
     image: "https://img.freepik.com/vector-gratis/kawaii-comida-rapida-lindo-hot-dog-comida-rapida-hamburguesas-papas-fritas-bebida-ilustracion-salsa-tomate_24908-60601.jpg?semt=ais_hybrid&w=740&q=80",
     candidatos: [
-      { id: 1, nombre: "Pizza", votos: 14, foto: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png" },
+      { id: 1, nombre: "Pizza", votos: 14, foto: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTI0-HmskFIOzX-o3_DTZdgLshMNluWvZpwAw&s" },
       { id: 2, nombre: "Hamburguesa", votos: 26, foto: "https://cdn-icons-png.flaticon.com/512/3075/3075977.png" },
-      { id: 3, nombre: "Pollo a la brasa", votos: 50, foto: "https://cdn-icons-png.flaticon.com/512/135/135763.png" }
+      { id: 3, nombre: "Pollo a la brasa", votos: 50, foto: "https://elcomercio.pe/resizer/v2/55QLUH7SV5E53AFZHMYNTJ4TTE.jpg?auth=bdffd2a0f4da7a109fb83ad9b94fcf63e5ca1c345be580dc898152c14dac10a0&width=1200&height=900&quality=75&smart=true" }
     ]
   },
   {
@@ -22,9 +22,9 @@ export const votaciones = [
     badge: "Activa",
     image: "https://travel1tours.com/wp-content/uploads/2019/09/Lugares-turisticos-de-Peru.jpg",
     candidatos: [
-      { id: 1, nombre: "Machu Picchu", votos: 100, foto: "https://cdn-icons-png.flaticon.com/512/684/684908.png" },
-      { id: 2, nombre: "Museo de arte de Lima", votos: 36, foto: "https://cdn-icons-png.flaticon.com/512/190/190602.png" },
-      { id: 3, nombre: "Castillo de Chancay", votos: 20, foto: "https://cdn-icons-png.flaticon.com/512/684/684908.png" }
+      { id: 1, nombre: "Machu Picchu", votos: 100, foto: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Machu_Picchu%2C_Peru_%282018%29.jpg/500px-Machu_Picchu%2C_Peru_%282018%29.jpg" },
+      { id: 2, nombre: "Museo de arte de Lima", votos: 36, foto: "https://www.peru.travel/Contenido/Uploads/foto-interna-mali-1_638440237944501200.jpg" },
+      { id: 3, nombre: "Castillo de Chancay", votos: 20, foto: "https://happyaventura.com/wp-content/uploads/2024/09/chancay.jpg" }
     ]
   },
   {
