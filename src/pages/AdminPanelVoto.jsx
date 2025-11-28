@@ -96,7 +96,7 @@ function PanelVotacionesPage() {
                 <p className="text-gray-600 text-sm mb-4">{votacion.descripcion}</p>
 
                 <div className="flex items-center gap-2 text-gray-600 text-sm mb-4">
-                  <span>{votacion.votos} votos</span>
+                  <span>{votacion.votos} Fecha de caducidad:</span>
                   <span>{votacion.fechaFin}</span>
                 </div>
 
