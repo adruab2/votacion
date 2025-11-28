@@ -12,21 +12,31 @@ const VotacionesContext = createContext();
 const STORAGE_KEY = "votaciones_app";
 
 export function VotacionesProvider({ children }) {
-  // Initialize state from localStorage or use initial data
   const [votaciones, setVotaciones] = useState(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        return Array.isArray(parsed) ? parsed : votacionesIniciales;
-      }
-    } catch (error) {
-      console.error("Error loading votaciones from localStorage:", error);
-    }
-    return votacionesIniciales;
-  });
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
 
-  // Save to localStorage whenever votaciones change
+    if (stored) {
+      const parsed = JSON.parse(stored);
+
+      if (Array.isArray(parsed)) {
+        return parsed.map(v => ({
+          ...v,
+          candidatos: Array.isArray(v.candidatos) ? v.candidatos : []
+        }));
+      }
+    }
+  } catch (error) {
+    console.error("Error loading votaciones from localStorage:", error);
+  }
+
+  return votacionesIniciales.map(v => ({
+    ...v,
+    candidatos: Array.isArray(v.candidatos) ? v.candidatos : []
+  }));
+});
+
+
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(votaciones));
@@ -35,15 +45,36 @@ export function VotacionesProvider({ children }) {
     }
   }, [votaciones]);
 
+  
+  // REGISTRAR VOTO
+  
+  const registrarVoto = useCallback((votacionId, candidatoId) => {
+    setVotaciones((prev) =>
+      prev.map((vot) =>
+        vot.id === votacionId
+          ? {
+              ...vot,
+              candidatos: vot.candidatos.map((c) =>
+                c.id === candidatoId
+                  ? { ...c, votos: (c.votos || 0) + 1 }
+                  : c
+              ),
+            }
+          : vot
+      )
+    );
+  }, []);
+
+
+  // AGREGAR VOTACION
+  
   const agregarVotacion = useCallback(
     (nuevaVotacion) => {
-      // Generate new ID
       const nuevoId =
         votaciones.length > 0
           ? Math.max(...votaciones.map((v) => v.id)) + 1
           : 1;
 
-      // Calculate estado based on dates
       const now = new Date();
       const fechaInicio = new Date(
         `${nuevaVotacion.fechaInicio}T${nuevaVotacion.horaInicio || "00:00"}`
@@ -89,6 +120,7 @@ export function VotacionesProvider({ children }) {
     [votaciones]
   );
 
+  
   const actualizarVotacion = useCallback((id, datosActualizados) => {
     setVotaciones((prev) =>
       prev.map((votacion) =>
@@ -107,8 +139,9 @@ export function VotacionesProvider({ children }) {
       agregarVotacion,
       actualizarVotacion,
       eliminarVotacion,
+      registrarVoto,
     }),
-    [votaciones, agregarVotacion, actualizarVotacion, eliminarVotacion]
+    [votaciones, agregarVotacion, actualizarVotacion, eliminarVotacion, registrarVoto]
   );
 
   return (

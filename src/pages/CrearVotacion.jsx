@@ -137,37 +137,34 @@ function CrearVotacion() {
     }
   };
 
-  const handleSubmit = () => {
-    try {
-      // Create new voting object
-      const newVotacion = {
-        ...formData,
-        id: Date.now(),
-        votos: 0,
-        estado: "activa",
-        badge: "Activa",
-        image: formData.imagen || "https://placehold.co/600x400?text=Votacion",
-      };
+     const handleSubmit = () => {
+  try {
+    const newVotacion = {
+      ...formData,
+      id: Date.now(),
+      candidatos: formData.candidatos.map(c => ({
+        ...c,
+        votos: 0
+      })),
+      estado: "activa",
+      badge: "Activa",
+      image: formData.imagen || "https://placehold.co/600x400?text=Votacion"
+    };
 
-      // Get existing data
-      const existingData = localStorage.getItem("votaciones");
-      const votaciones = existingData ? JSON.parse(existingData) : [];
+    agregarVotacion(newVotacion);
 
-      // Add new voting
-      votaciones.push(newVotacion);
+    console.log("Votación creada:", newVotacion);
+    alert("¡Votación publicada exitosamente!");
 
-      // Save to localStorage
-      agregarVotacion(formData);
+    navigate("/admin/panel-voto");
 
-      console.log("Votación creada:", newVotacion);
-      alert("¡Votación publicada exitosamente!");
+  } catch (error) {
+    console.error("Error al crear la votación:", error);
+    alert("Hubo un error al crear la votación.");
+  }
+};
 
-      navigate("/admin/panel-voto");
-    } catch (error) {
-      console.error("Error al crear la votación:", error);
-      alert("Hubo un error al crear la votación.");
-    }
-  };
+
 
   return (
     <div className="min-h-screen bg-gray-50">
