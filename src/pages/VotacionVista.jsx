@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useVotaciones } from "../context/VotacionesContext";
 
@@ -7,12 +7,25 @@ export default function VotacionVista() {
   const { votaciones, registrarVoto } = useVotaciones();
 
   const [selectedVotes, setSelectedVotes] = useState({}); // guardará la selección por votación
+  const [votadas, setVotadas] = useState({}); // votaciones ya enviadas
+
+  // cargar votos previos desde localStorage
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("votosUsuario")) || {};
+    setVotadas(stored);
+  }, []);
 
   const handleSelect = (votacionId, candidatoId) => {
+    if (votadas[votacionId]) return; // si ya votó, no permite seleccionar
     setSelectedVotes((prev) => ({ ...prev, [votacionId]: candidatoId }));
   };
 
   const handleSubmit = (votacionId) => {
+    if (votadas[votacionId]) {
+      alert("Ya has votado en esta votación.");
+      return;
+    }
+
     const selected = selectedVotes[votacionId];
     if (!selected) {
       alert("Selecciona un candidato antes de enviar.");
@@ -20,6 +33,12 @@ export default function VotacionVista() {
     }
 
     registrarVoto(votacionId, selected);
+
+    // marcar como votada
+    const updatedVotadas = { ...votadas, [votacionId]: true };
+    setVotadas(updatedVotadas);
+    localStorage.setItem("votosUsuario", JSON.stringify(updatedVotadas));
+
     alert("¡Voto registrado!");
   };
 
@@ -42,14 +61,14 @@ export default function VotacionVista() {
                   key={cand.id}
                   onClick={() => handleSelect(votacion.id, cand.id)}
                   className={`flex p-4 rounded-xl border cursor-pointer transition 
-                    ${selectedVotes[votacion.id] === cand.id ? "bg-blue-100 border-blue-500" : "bg-white border-gray-300"}
+                    ${
+                      selectedVotes[votacion.id] === cand.id
+                        ? "bg-blue-100 border-blue-500"
+                        : "bg-white border-gray-300"
+                    }
+                    ${votadas[votacion.id] ? "opacity-50 cursor-not-allowed" : ""}
                   `}
                 >
-                  <img
-                    src={cand.foto}
-                    alt={cand.nombre}
-                    className="w-28 h-36 object-cover rounded-lg"
-                  />
                   <div className="ml-4 text-gray-700 flex flex-col justify-center">
                     <p className="font-bold">{cand.nombre}</p>
                     <p>{cand.descripcion || "Candidato"}</p>
@@ -61,9 +80,14 @@ export default function VotacionVista() {
             {/* BOTÓN ENVIAR */}
             <button
               onClick={() => handleSubmit(votacion.id)}
-              className="bg-blue-500 text-white px-8 py-2 rounded-full font-semibold mt-6 hover:bg-blue-600"
+              className={`px-8 py-2 rounded-full font-semibold mt-6 ${
+                votadas[votacion.id]
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+              disabled={votadas[votacion.id]}
             >
-              Enviar
+              {votadas[votacion.id] ? "Votación completada" : "Enviar"}
             </button>
           </div>
         ))}

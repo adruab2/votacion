@@ -28,7 +28,7 @@ export default function Resultados() {
         <div className="space-y-10">
           {votaciones.map((vot) => {
 
-            const candidatos = vot.candidatos || []; // 🔥 Siempre un array
+            const candidatos = vot.candidatos || []; 
 
             const totalVotos = candidatos.reduce(
               (sum, c) => sum + (c.votos || 0),
