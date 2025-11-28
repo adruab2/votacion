@@ -4,9 +4,11 @@ import Step1InformacionGeneral from "../components/crear-votacion/Step1Informaci
 import Step2Candidatos from "../components/crear-votacion/Step2Candidatos";
 import Step3ReglasYFechas from "../components/crear-votacion/Step3ReglasYFechas";
 import Step4RevisionYPublicar from "../components/crear-votacion/Step4RevisionYPublicar";
+import { useVotaciones } from "../context/VotacionesContext";
 
 function CrearVotacion() {
   const navigate = useNavigate();
+  const { agregarVotacion } = useVotaciones();
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
@@ -61,9 +63,18 @@ function CrearVotacion() {
 
   const validateStep3 = () => {
     const newErrors = {};
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     if (!formData.fechaInicio) {
       newErrors.fechaInicio = "La fecha de inicio es obligatoria";
+    } else {
+      // Check if start date is in the past
+      const selectedStartDate = new Date(formData.fechaInicio);
+      if (selectedStartDate < today) {
+        newErrors.fechaInicio =
+          "La fecha de inicio no puede ser anterior a hoy";
+      }
     }
 
     if (!formData.horaInicio) {
@@ -79,7 +90,7 @@ function CrearVotacion() {
     }
 
     // Validate that end date is after start date
-    if (formData.fechaInicio && formData.fechaFin) {
+    if (formData.fechaInicio && formData.fechaFin && !newErrors.fechaInicio) {
       const startDateTime = new Date(
         `${formData.fechaInicio}T${formData.horaInicio || "00:00"}`
       );
@@ -127,28 +138,35 @@ function CrearVotacion() {
   };
 
   const handleSubmit = () => {
-    // Create new voting object
-    const newVotacion = {
-      ...formData,
-      id: Date.now(),
-      votos: 0,
-      estado: "activa",
-      badge: "Activa",
-      image: formData.imagen || "https://placehold.co/600x400?text=Votacion",
-    };
+    try {
+      // Create new voting object
+      const newVotacion = {
+        ...formData,
+        id: Date.now(),
+        votos: 0,
+        estado: "activa",
+        badge: "Activa",
+        image: formData.imagen || "https://placehold.co/600x400?text=Votacion",
+      };
 
-    // Get existing data
-    const existingData = localStorage.getItem("votaciones");
-    const votaciones = existingData ? JSON.parse(existingData) : [];
+      // Get existing data
+      const existingData = localStorage.getItem("votaciones");
+      const votaciones = existingData ? JSON.parse(existingData) : [];
 
-    // Add new voting
-    votaciones.push(newVotacion);
+      // Add new voting
+      votaciones.push(newVotacion);
 
-    // Save to localStorage
-    localStorage.setItem("votaciones", JSON.stringify(votaciones));
+      // Save to localStorage
+      agregarVotacion(formData);
 
-    console.log("Votación creada:", newVotacion);
-    navigate("/admin/panel-voto");
+      console.log("Votación creada:", newVotacion);
+      alert("¡Votación publicada exitosamente!");
+
+      navigate("/admin/panel-voto");
+    } catch (error) {
+      console.error("Error al crear la votación:", error);
+      alert("Hubo un error al crear la votación.");
+    }
   };
 
   return (
@@ -191,22 +209,24 @@ function CrearVotacion() {
                 <div className="flex flex-col items-center flex-1">
                   {/* Circle */}
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold transition ${currentStep === step.number
-                      ? "bg-blue-600 text-white"
-                      : currentStep > step.number
+                    className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold transition ${
+                      currentStep === step.number
+                        ? "bg-blue-600 text-white"
+                        : currentStep > step.number
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-500"
-                      }`}
+                    }`}
                   >
                     {step.number}
                   </div>
                   {/* Labels */}
                   <div className="text-center mt-2">
                     <div
-                      className={`text-sm font-medium ${currentStep >= step.number
-                        ? "text-gray-900"
-                        : "text-gray-500"
-                        }`}
+                      className={`text-sm font-medium ${
+                        currentStep >= step.number
+                          ? "text-gray-900"
+                          : "text-gray-500"
+                      }`}
                     >
                       {step.title}
                     </div>
@@ -216,8 +236,9 @@ function CrearVotacion() {
                 {/* Connector line */}
                 {index < steps.length - 1 && (
                   <div
-                    className={`h-0.5 flex-1 -mt-12 transition ${currentStep > step.number ? "bg-blue-600" : "bg-gray-200"
-                      }`}
+                    className={`h-0.5 flex-1 -mt-12 transition ${
+                      currentStep > step.number ? "bg-blue-600" : "bg-gray-200"
+                    }`}
                   />
                 )}
               </div>
@@ -283,8 +304,8 @@ function CrearVotacion() {
                 {currentStep === 1
                   ? "Candidatos"
                   : currentStep === 2
-                    ? "Reglas y Fechas"
-                    : "Revisión y Publicar"}
+                  ? "Reglas y Fechas"
+                  : "Revisión y Publicar"}
               </button>
             ) : (
               <button

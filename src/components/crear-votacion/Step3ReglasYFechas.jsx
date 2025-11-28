@@ -13,6 +13,20 @@ function Step3ReglasYFechas({ formData, setFormData, errors = {}, setErrors }) {
         [name]: "",
       }));
     }
+
+    // Validate start date in real-time
+    if (name === "fechaInicio" && value && setErrors) {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const selectedDate = new Date(value);
+
+      if (selectedDate < today) {
+        setErrors((prev) => ({
+          ...prev,
+          fechaInicio: "La fecha de inicio no puede ser anterior a hoy",
+        }));
+      }
+    }
   };
 
   return (
