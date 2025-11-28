@@ -36,7 +36,7 @@ export default function UserLogin() {
     }
 
     // Redirect if login OK
-    window.location.href = "/user/panel-voto";
+    window.location.href = "/user/vota";
   }
 
   return (

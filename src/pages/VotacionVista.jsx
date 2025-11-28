@@ -21,7 +21,6 @@ export default function VotacionVista() {
 
     registrarVoto(votacionId, selected);
     alert("¡Voto registrado!");
-    navigate("/votacion/resultados");
   };
 
   return (
