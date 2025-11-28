@@ -42,7 +42,7 @@ export default function AdminLogin() {
             onChange={(e) => setPassword(e.target.value)} />
 
           <label>Código de seguridad:</label>
-          <input type="text" value={securityCode}
+          <input type="password" value={securityCode}
             onChange={(e) => setSecurityCode(e.target.value)} />
 
           <button onClick={handleLogin}>Ingresar</button>
