@@ -127,7 +127,27 @@ function CrearVotacion() {
   };
 
   const handleSubmit = () => {
-    console.log("Votación creada:", formData);
+    // Create new voting object
+    const newVotacion = {
+      ...formData,
+      id: Date.now(),
+      votos: 0,
+      estado: "activa",
+      badge: "Activa",
+      image: formData.imagen || "https://placehold.co/600x400?text=Votacion",
+    };
+
+    // Get existing data
+    const existingData = localStorage.getItem("votaciones");
+    const votaciones = existingData ? JSON.parse(existingData) : [];
+
+    // Add new voting
+    votaciones.push(newVotacion);
+
+    // Save to localStorage
+    localStorage.setItem("votaciones", JSON.stringify(votaciones));
+
+    console.log("Votación creada:", newVotacion);
     navigate("/admin/panel-voto");
   };
 
@@ -171,24 +191,22 @@ function CrearVotacion() {
                 <div className="flex flex-col items-center flex-1">
                   {/* Circle */}
                   <div
-                    className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold transition ${
-                      currentStep === step.number
-                        ? "bg-blue-600 text-white"
-                        : currentStep > step.number
+                    className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold transition ${currentStep === step.number
+                      ? "bg-blue-600 text-white"
+                      : currentStep > step.number
                         ? "bg-blue-600 text-white"
                         : "bg-gray-200 text-gray-500"
-                    }`}
+                      }`}
                   >
                     {step.number}
                   </div>
                   {/* Labels */}
                   <div className="text-center mt-2">
                     <div
-                      className={`text-sm font-medium ${
-                        currentStep >= step.number
-                          ? "text-gray-900"
-                          : "text-gray-500"
-                      }`}
+                      className={`text-sm font-medium ${currentStep >= step.number
+                        ? "text-gray-900"
+                        : "text-gray-500"
+                        }`}
                     >
                       {step.title}
                     </div>
@@ -198,9 +216,8 @@ function CrearVotacion() {
                 {/* Connector line */}
                 {index < steps.length - 1 && (
                   <div
-                    className={`h-0.5 flex-1 -mt-12 transition ${
-                      currentStep > step.number ? "bg-blue-600" : "bg-gray-200"
-                    }`}
+                    className={`h-0.5 flex-1 -mt-12 transition ${currentStep > step.number ? "bg-blue-600" : "bg-gray-200"
+                      }`}
                   />
                 )}
               </div>
@@ -219,7 +236,9 @@ function CrearVotacion() {
             />
           )}
 
-          {currentStep === 2 && <Step2Candidatos />}
+          {currentStep === 2 && (
+            <Step2Candidatos formData={formData} setFormData={setFormData} />
+          )}
 
           {currentStep === 3 && (
             <Step3ReglasYFechas
@@ -264,8 +283,8 @@ function CrearVotacion() {
                 {currentStep === 1
                   ? "Candidatos"
                   : currentStep === 2
-                  ? "Reglas y Fechas"
-                  : "Revisión y Publicar"}
+                    ? "Reglas y Fechas"
+                    : "Revisión y Publicar"}
               </button>
             ) : (
               <button
