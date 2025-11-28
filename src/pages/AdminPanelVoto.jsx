@@ -42,7 +42,7 @@ function PanelVotacionesPage() {
               </button>
 
               <button
-                onClick={() => navigate("/votacion/resultados")}
+                onClick={() => navigate("/votacion/resultados", { state: { from: "admin" } })}
                 className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
               >
                 Ver Resultados

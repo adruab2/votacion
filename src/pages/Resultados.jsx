@@ -1,9 +1,21 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useVotaciones } from "../context/VotacionesContext";
 
 export default function Resultados() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { votaciones } = useVotaciones();
+
+  // Determinar de dónde viene el usuario
+  const from = location.state?.from || "user"; // default "user"
+
+  const handleVolver = () => {
+    if (from === "admin") {
+      navigate("/admin/panel-voto");
+    } else {
+      navigate("/user/vota");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -17,7 +29,7 @@ export default function Resultados() {
           </div>
 
           <button
-            onClick={() => navigate("/admin/panel-voto")}
+            onClick={handleVolver}
             className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
           >
             Volver al Panel
@@ -27,14 +39,11 @@ export default function Resultados() {
         {/* LISTA DE VOTACIONES */}
         <div className="space-y-10">
           {votaciones.map((vot) => {
-
-            const candidatos = vot.candidatos || []; 
-
+            const candidatos = vot.candidatos || [];
             const totalVotos = candidatos.reduce(
               (sum, c) => sum + (c.votos || 0),
               0
             );
-
             const maxVotos =
               candidatos.length > 0
                 ? Math.max(...candidatos.map((c) => c.votos || 0))
@@ -45,9 +54,7 @@ export default function Resultados() {
                 key={vot.id}
                 className="bg-white shadow-sm rounded-xl p-6 border border-gray-200"
               >
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {vot.titulo}
-                </h2>
+                <h2 className="text-2xl font-bold text-gray-900">{vot.titulo}</h2>
                 <p className="text-gray-600 mb-6">{vot.descripcion}</p>
 
                 {candidatos.length === 0 ? (
@@ -61,11 +68,7 @@ export default function Resultados() {
                         totalVotos > 0
                           ? ((cand.votos / totalVotos) * 100).toFixed(1)
                           : 0;
-
-                      const width =
-                        maxVotos > 0
-                          ? (cand.votos / maxVotos) * 100
-                          : 0;
+                      const width = maxVotos > 0 ? (cand.votos / maxVotos) * 100 : 0;
 
                       return (
                         <div
@@ -80,7 +83,6 @@ export default function Resultados() {
                                 className="w-14 h-14 rounded-lg object-cover"
                               />
                             )}
-
                             <div>
                               <h3 className="text-lg font-semibold text-gray-800">
                                 {cand.nombre}
@@ -106,7 +108,6 @@ export default function Resultados() {
             );
           })}
         </div>
-
       </div>
     </div>
   );
