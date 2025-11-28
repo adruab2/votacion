@@ -165,24 +165,7 @@ function Step3ReglasYFechas({ formData, setFormData, errors = {}, setErrors }) {
                 </div>
               </label>
 
-              <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
-                <input
-                  type="radio"
-                  name="tipoVotacion"
-                  value="multiple"
-                  checked={formData.tipoVotacion === "multiple"}
-                  onChange={handleInputChange}
-                  className="mt-1 w-4 h-4 text-blue-600 cursor-pointer"
-                />
-                <div className="flex-1">
-                  <div className="font-medium text-gray-900">
-                    Selección Múltiple
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Los participantes pueden seleccionar varias opciones
-                  </div>
-                </div>
-              </label>
+
             </div>
           </fieldset>
         </div>
@@ -201,43 +184,7 @@ function Step3ReglasYFechas({ formData, setFormData, errors = {}, setErrors }) {
               Visibilidad <span className="text-red-500">*</span>
             </legend>
             <div className="space-y-3">
-              <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
-                <input
-                  type="radio"
-                  name="visibilidad"
-                  value="ocultos"
-                  checked={formData.visibilidad === "ocultos"}
-                  onChange={handleInputChange}
-                  className="mt-1 w-4 h-4 text-blue-600 cursor-pointer"
-                />
-                <div className="flex-1">
-                  <div className="font-medium text-gray-900">
-                    Ocultos (Solo Admins)
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Solo los administradores pueden ver los resultados
-                  </div>
-                </div>
-              </label>
 
-              <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
-                <input
-                  type="radio"
-                  name="visibilidad"
-                  value="finalizar"
-                  checked={formData.visibilidad === "finalizar"}
-                  onChange={handleInputChange}
-                  className="mt-1 w-4 h-4 text-blue-600 cursor-pointer"
-                />
-                <div className="flex-1">
-                  <div className="font-medium text-gray-900">
-                    Públicos al Finalizar
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Los resultados se mostrarán cuando la votación cierre
-                  </div>
-                </div>
-              </label>
 
               <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
                 <input
@@ -273,24 +220,7 @@ function Step3ReglasYFechas({ formData, setFormData, errors = {}, setErrors }) {
               Acceso Requerido <span className="text-red-500">*</span>
             </legend>
             <div className="space-y-3">
-              <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
-                <input
-                  type="radio"
-                  name="acceso"
-                  value="publico"
-                  checked={formData.acceso === "publico"}
-                  onChange={handleInputChange}
-                  className="mt-1 w-4 h-4 text-blue-600 cursor-pointer"
-                />
-                <div className="flex-1">
-                  <div className="font-medium text-gray-900">
-                    Público (Cualquiera)
-                  </div>
-                  <div className="text-sm text-gray-600">
-                    Cualquier persona con el link puede votar
-                  </div>
-                </div>
-              </label>
+              
 
               <label className="flex items-start gap-3 p-4 border-2 border-gray-200 rounded-lg hover:border-blue-300 transition cursor-pointer">
                 <input
