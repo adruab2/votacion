@@ -6,25 +6,25 @@ export const votaciones = [
     fechaFin: "2025-11-10",
     estado: "activa",
     badge: "Activa",
-    image: "https://placehold.co/600x400?text=No+Imagen",
+    image: "https://img.freepik.com/vector-gratis/kawaii-comida-rapida-lindo-hot-dog-comida-rapida-hamburguesas-papas-fritas-bebida-ilustracion-salsa-tomate_24908-60601.jpg?semt=ais_hybrid&w=740&q=80",
     candidatos: [
-      { id: 1, nombre: "Pizza", votos: 0 },
-      { id: 2, nombre: "Hamburguesa", votos: 0 },
-      { id: 3, nombre: "Pollo a la brasa", votos: 0 }
+      { id: 1, nombre: "Pizza", votos: 14 },
+      { id: 2, nombre: "Hamburguesa", votos: 26 },
+      { id: 3, nombre: "Pollo a la brasa", votos: 50 }
     ]
   },
   {
     id: 2,
-    titulo: "Mejor Meme del Mes",
-    descripcion: "Vota por el meme más divertido de noviembre",
+    titulo: "Mejor Lugar Turistico del Mes",
+    descripcion: "Vota por el mejor lugar turistico de nuestro pais",
     fechaFin: "2025-11-01",
     estado: "activa",
     badge: "Activa",
-    image: "https://placehold.co/600x400?text=No+Imagen",
+    image: "https://travel1tours.com/wp-content/uploads/2019/09/Lugares-turisticos-de-Peru.jpg",
     candidatos: [
-      { id: 1, nombre: "Meme 1", votos: 0 },
-      { id: 2, nombre: "Meme 2", votos: 0 },
-      { id: 3, nombre: "Meme 3", votos: 0 }
+      { id: 1, nombre: "Machu Picchu", votos: 100 },
+      { id: 2, nombre: "Museo de arte de Lima", votos: 36 },
+      { id: 3, nombre: "Castillo de Chancay", votos: 20 }
     ]
   },
   {
@@ -34,51 +34,38 @@ export const votaciones = [
     fechaFin: "2025-10-15",
     estado: "cerrada",
     badge: "Cerrada",
-    image: "https://placehold.co/600x400?text=No+Imagen",
+    image: "https://www.codemotion.com/magazine/wp-content/uploads/2023/02/shahadat-rahman-gnyA8vd3Otc-unsplash-896x504.jpg",
     candidatos: [
-      { id: 1, nombre: "Proyecto A", votos: 0 },
-      { id: 2, nombre: "Proyecto B", votos: 0 }
+      { id: 1, nombre: "Crear un juego de adivinar un numero", votos: 23 },
+      { id: 2, nombre: "Realizar una pagina Web de votación", votos: 26 }
     ]
   },
+
   {
     id: 4,
-    titulo: "Nuevo Logo de la Empresa",
-    descripcion: "Elige el diseño del nuevo logo corporativo",
-    fechaFin: "2025-11-14",
-    estado: "programada",
-    badge: "Programada",
-    image: "https://placehold.co/600x400?text=No+Imagen",
-    candidatos: [
-      { id: 1, nombre: "Logo Azul", votos: 0 },
-      { id: 2, nombre: "Logo Minimalista", votos: 0 },
-      { id: 3, nombre: "Logo Moderno", votos: 0 }
-    ]
-  },
-  {
-    id: 5,
     titulo: "Horario de Oficina",
     descripcion: "Votación sobre el horario flexible",
     fechaFin: "2025-09-20",
     estado: "cerrada",
     badge: "Cerrada",
-    image: "https://placehold.co/600x400?text=No+Imagen",
+    image: "https://pensamientocarlosreyes.com/wp-content/uploads/2016/04/personal-885550_640_mini.jpg?w=640",
     candidatos: [
-      { id: 1, nombre: "8am - 5pm", votos: 0 },
-      { id: 2, nombre: "9am - 6pm", votos: 0 }
+      { id: 1, nombre: "8am - 5pm", votos: 3 },
+      { id: 2, nombre: "9am - 6pm", votos: 10 }
     ]
   },
   {
-    id: 6,
+    id: 5,
     titulo: "Beneficios del Equipo",
     descripcion: "Selecciona los beneficios preferidos",
     fechaFin: "2025-11-05",
     estado: "activa",
     badge: "Activa",
-    image: "https://placehold.co/600x400?text=No+Imagen",
+    image: "https://coolspaces.mx/wp-content/uploads/2019/03/53910532_365473977375006_5738127318782574592_n.jpg",
     candidatos: [
-      { id: 1, nombre: "Snacks gratis", votos: 0 },
-      { id: 2, nombre: "Día de home office", votos: 0 },
-      { id: 3, nombre: "Bono mensual", votos: 0 }
+      { id: 1, nombre: "Snacks gratis", votos: 10 },
+      { id: 2, nombre: "Día de home office", votos: 15 },
+      { id: 3, nombre: "Bono mensual", votos: 40 }
     ]
   }
 ];

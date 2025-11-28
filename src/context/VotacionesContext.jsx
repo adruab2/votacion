@@ -13,29 +13,31 @@ const STORAGE_KEY = "votaciones_app";
 
 export function VotacionesProvider({ children }) {
   const [votaciones, setVotaciones] = useState(() => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
 
-    if (stored) {
-      const parsed = JSON.parse(stored);
+      if (stored) {
+        const parsed = JSON.parse(stored);
 
-      if (Array.isArray(parsed)) {
-        return parsed.map(v => ({
-          ...v,
-          candidatos: Array.isArray(v.candidatos) ? v.candidatos : []
-        }));
+        if (Array.isArray(parsed)) {
+          return parsed.map((v) => ({
+            ...v,
+            candidatos: Array.isArray(v.candidatos) ? v.candidatos : [],
+            image: v.image || "https://placehold.co/600x400?text=No+Imagen",
+          }));
+        }
       }
+    } catch (error) {
+      console.error("Error loading votaciones from localStorage:", error);
     }
-  } catch (error) {
-    console.error("Error loading votaciones from localStorage:", error);
-  }
 
-  return votacionesIniciales.map(v => ({
-    ...v,
-    candidatos: Array.isArray(v.candidatos) ? v.candidatos : []
-  }));
-});
-
+    // Cargar datos iniciales
+    return votacionesIniciales.map((v) => ({
+      ...v,
+      candidatos: Array.isArray(v.candidatos) ? v.candidatos : [],
+      image: v.image || "https://placehold.co/600x400?text=No+Imagen",
+    }));
+  });
 
   useEffect(() => {
     try {
@@ -45,9 +47,6 @@ export function VotacionesProvider({ children }) {
     }
   }, [votaciones]);
 
-  
-  // REGISTRAR VOTO
-  
   const registrarVoto = useCallback((votacionId, candidatoId) => {
     setVotaciones((prev) =>
       prev.map((vot) =>
@@ -55,19 +54,15 @@ export function VotacionesProvider({ children }) {
           ? {
               ...vot,
               candidatos: vot.candidatos.map((c) =>
-                c.id === candidatoId
-                  ? { ...c, votos: (c.votos || 0) + 1 }
-                  : c
+                c.id === candidatoId ? { ...c, votos: (c.votos || 0) + 1 } : c
               ),
+              // Marcar votación como cerrada para el usuario si quieres impedir re-voto
             }
           : vot
       )
     );
   }, []);
 
-
-  // AGREGAR VOTACION
-  
   const agregarVotacion = useCallback(
     (nuevaVotacion) => {
       const nuevoId =
@@ -120,7 +115,6 @@ export function VotacionesProvider({ children }) {
     [votaciones]
   );
 
-  
   const actualizarVotacion = useCallback((id, datosActualizados) => {
     setVotaciones((prev) =>
       prev.map((votacion) =>

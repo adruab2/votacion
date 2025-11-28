@@ -32,10 +32,8 @@ function PanelVotacionesPage() {
               </p>
             </div>
 
-            {/* ⬇️ BOTONES DEL HEADER (CON TU BOTÓN VERDE RESTAURADO) */}
+            {/* BOTONES DEL HEADER */}
             <div className="flex gap-3">
-
-
               <button
                 onClick={() => navigate("/admin/crear-votacion")}
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -43,7 +41,6 @@ function PanelVotacionesPage() {
                 Crear Nueva Votación
               </button>
 
-              {/* ⬇️ BOTÓN VERDE – VUELTO A AGREGAR */}
               <button
                 onClick={() => navigate("/votacion/resultados")}
                 className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
@@ -54,7 +51,7 @@ function PanelVotacionesPage() {
           </div>
         </div>
 
-        {/* GRID */}
+        {/* GRID DE VOTACIONES */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {/* CARD PARA CREAR VOTACIÓN */}
@@ -81,7 +78,7 @@ function PanelVotacionesPage() {
                   <img
                     src={votacion.image}
                     alt={votacion.titulo}
-                    className="w-full h-40 object-cover"
+                    className="w-full h-40 object-cover rounded-t-xl"
                   />
                 )}
 
@@ -103,10 +100,8 @@ function PanelVotacionesPage() {
                   <span>{votacion.fechaFin}</span>
                 </div>
 
-                {/* BOTONES */}
+                {/* BOTONES DE ACCIÓN */}
                 <div className="flex gap-2">
-
-                  {/* ⬇️ VER DETALLES */}
                   <button
                     onClick={() => navigate(`/admin/votacion/${votacion.id}`)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
@@ -114,14 +109,12 @@ function PanelVotacionesPage() {
                     Ver detalles
                   </button>
 
-                  {/* ⬇️ EDITAR VOTACIÓN */}
                   <button
                     onClick={() => navigate(`/admin/editar-votacion/${votacion.id}`)}
                     className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
                   >
                     Editar
                   </button>
-
                 </div>
               </div>
             </div>
