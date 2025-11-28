@@ -28,8 +28,8 @@ function App() {
           <Route path="/admin/panel-voto" element={<AdminPanelVoto />} />
           <Route path="/admin/crear-votacion" element={<CrearVotacion />} />
           {/* detalles y editar */}
-          <Route path="/admin/votacion/:id" element={<DetallesVotacion />} />
-          <Route path="/admin/votacion/:id/editar" element={<EditarVotacion />} />
+          <Route path="/admin/votacion/:id" element={<AdminVotacionDetalle />} />
+          <Route path="/admin/editar-votacion/:id" element={<EditarVotacion />} />
 
           {/* RESULTADOS */}
           <Route path="/votacion/resultados" element={<Resultados />} />
