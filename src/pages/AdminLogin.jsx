@@ -19,7 +19,7 @@ export default function AdminLogin() {
     );
 
     if (admin) {
-      navigate("/admin/PanelVoto");
+      navigate("/admin/Panel-Voto");
     } else {
       alert("Datos incorrectos");
     }

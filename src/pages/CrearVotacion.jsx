@@ -148,7 +148,7 @@ function CrearVotacion() {
     localStorage.setItem("votaciones", JSON.stringify(votaciones));
 
     console.log("Votación creada:", newVotacion);
-    navigate("/admin/PanelVoto");
+    navigate("/admin/panel-voto");
   };
 
   return (
