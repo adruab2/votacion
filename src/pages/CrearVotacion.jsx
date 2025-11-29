@@ -23,7 +23,7 @@ function CrearVotacion() {
     horaFin: "",
     tipoVotacion: "unico",
     visibilidad: "ocultos",
-    acceso: "publico",
+    acceso: "registrados",
   });
 
   const steps = [
@@ -137,34 +137,31 @@ function CrearVotacion() {
     }
   };
 
-     const handleSubmit = () => {
-  try {
-    const newVotacion = {
-      ...formData,
-      id: Date.now(),
-      candidatos: formData.candidatos.map(c => ({
-        ...c,
-        votos: 0
-      })),
-      estado: "activa",
-      badge: "Activa",
-      image: formData.imagen || "https://placehold.co/600x400?text=Votacion"
-    };
+  const handleSubmit = () => {
+    try {
+      const newVotacion = {
+        ...formData,
+        id: Date.now(),
+        candidatos: formData.candidatos.map((c) => ({
+          ...c,
+          votos: 0,
+        })),
+        estado: "activa",
+        badge: "Activa",
+        image: formData.imagen || "https://placehold.co/600x400?text=Votacion",
+      };
 
-    agregarVotacion(newVotacion);
+      agregarVotacion(newVotacion);
 
-    console.log("Votación creada:", newVotacion);
-    alert("¡Votación publicada exitosamente!");
+      console.log("Votación creada:", newVotacion);
+      alert("¡Votación publicada exitosamente!");
 
-    navigate("/admin/panel-voto");
-
-  } catch (error) {
-    console.error("Error al crear la votación:", error);
-    alert("Hubo un error al crear la votación.");
-  }
-};
-
-
+      navigate("/admin/panel-voto");
+    } catch (error) {
+      console.error("Error al crear la votación:", error);
+      alert("Hubo un error al crear la votación.");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">

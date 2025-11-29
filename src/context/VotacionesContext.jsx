@@ -6,7 +6,6 @@ import {
   useCallback,
   useEffect,
 } from "react";
-import { votaciones as votacionesIniciales } from "../data/votacionesData";
 
 const VotacionesContext = createContext();
 const STORAGE_KEY = "votaciones_app";
@@ -31,12 +30,8 @@ export function VotacionesProvider({ children }) {
       console.error("Error loading votaciones from localStorage:", error);
     }
 
-    // Cargar datos iniciales
-    return votacionesIniciales.map((v) => ({
-      ...v,
-      candidatos: Array.isArray(v.candidatos) ? v.candidatos : [],
-      image: v.image || "https://placehold.co/600x400?text=No+Imagen",
-    }));
+    // Inicializar con array vacío
+    return [];
   });
 
   useEffect(() => {
@@ -135,7 +130,13 @@ export function VotacionesProvider({ children }) {
       eliminarVotacion,
       registrarVoto,
     }),
-    [votaciones, agregarVotacion, actualizarVotacion, eliminarVotacion, registrarVoto]
+    [
+      votaciones,
+      agregarVotacion,
+      actualizarVotacion,
+      eliminarVotacion,
+      registrarVoto,
+    ]
   );
 
   return (

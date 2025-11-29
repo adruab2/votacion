@@ -287,6 +287,69 @@ function Step1InformacionGeneral({
               </button>
             </div>
           </div>
+
+          {/* Image preview */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 bg-gray-50">
+            {imagePreview ? (
+              <div className="relative">
+                <img
+                  src={imagePreview}
+                  alt="Vista previa de imagen de portada"
+                  className="w-full h-64 object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImagePreview(null);
+                    setFormData((prev) => ({ ...prev, imagen: "" }));
+                  }}
+                  className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition cursor-pointer"
+                  aria-label="Eliminar imagen"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <div className="text-center">
+                <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-600 font-medium mb-1">
+                  Arrastra una imagen aquí o haz clic para seleccionar
+                </p>
+                <p className="text-xs text-gray-500">
+                  PNG, JPG o WEBP (máx. 5MB)
+                </p>
+              </div>
+            )}
+          </div>
+          <p className="text-xs text-gray-500 mt-1">
+            Esta imagen se mostrará en la tarjeta de la votación
+          </p>
         </div>
       </div>
     </div>
