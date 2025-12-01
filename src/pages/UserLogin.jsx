@@ -42,11 +42,11 @@ export default function UserLogin() {
       return;
     }
 
-    if (remember) {
-      localStorage.setItem("userData", JSON.stringify({ dni, password }));
-    } else {
-      localStorage.removeItem("userData");
-    }
+    // Guardar sesión del usuario
+    localStorage.setItem("userData", JSON.stringify({ dni, password }));
+
+    // Si no quiere ser recordado, limpiar después de navegar no es necesario
+    // La sesión se mantiene mientras el navegador esté abierto
 
     window.location.href = "/user/vota";
   }

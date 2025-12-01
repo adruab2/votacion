@@ -20,6 +20,17 @@ export default function PanelVotacionesPage() {
     }
   };
 
+  // Función para cerrar sesión de admin
+  const handleLogout = () => {
+    if (window.confirm("¿Estás seguro de que deseas cerrar sesión?")) {
+      localStorage.removeItem("adminData");
+      navigate("/admin/login");
+    }
+  };
+
+  // Obtener datos del admin actual
+  const adminActual = JSON.parse(localStorage.getItem("adminData")) || {};
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
@@ -34,7 +45,10 @@ export default function PanelVotacionesPage() {
                 Gestiona y administra todas las votaciones activas
               </p>
             </div>
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center flex-wrap justify-end">
+              <span className="text-sm text-gray-600">
+                Admin: {adminActual.email || adminActual.usuario || "Admin"}
+              </span>
               <button
                 onClick={() => navigate("/admin/crear-votacion")}
                 className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
@@ -74,6 +88,25 @@ export default function PanelVotacionesPage() {
                   <path d="m19 9-5 5-4-4-3 3" />
                 </svg>
                 Ver Resultados
+              </button>
+              <button
+                onClick={handleLogout}
+                className="cursor-pointer flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                  />
+                </svg>
+                Cerrar sesión
               </button>
             </div>
           </div>
