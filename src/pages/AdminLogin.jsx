@@ -19,7 +19,12 @@ export default function AdminLogin() {
     );
 
     if (admin) {
-      navigate("/admin/Panel-Voto");
+      // Guardar datos del admin en localStorage
+      localStorage.setItem(
+        "adminData",
+        JSON.stringify({ email: admin.email, usuario: admin.usuario })
+      );
+      navigate("/admin/panel-voto");
     } else {
       alert("Datos incorrectos");
     }

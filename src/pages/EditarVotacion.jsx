@@ -16,7 +16,8 @@ function EditarVotacion() {
     horaInicio: "",
     fechaFin: "",
     horaFin: "",
-    candidatos: []
+    candidatos: [],
+    visibilidad: "tiempo-real"
   });
 
   // Cargar datos iniciales
@@ -28,8 +29,9 @@ function EditarVotacion() {
         fechaInicio: votacionOriginal.fechaInicio || "",
         horaInicio: votacionOriginal.horaInicio || "",
         fechaFin: votacionOriginal.fechaFin || "",
-        horaFin: votacionOriginal.horaFin || "",
-        candidatos: [...votacionOriginal.candidatos]
+          horaFin: votacionOriginal.horaFin || "",
+          candidatos: [...votacionOriginal.candidatos],
+          visibilidad: votacionOriginal.visibilidad || "tiempo-real"
       });
     }
   }, [votacionOriginal]);
@@ -145,6 +147,19 @@ function EditarVotacion() {
           onChange={handleChange}
           className="w-full p-2 border rounded mb-6"
         />
+
+        {/* VISIBILIDAD */}
+        <label className="block mb-2 font-semibold">Visibilidad de resultados</label>
+        <select
+          name="visibilidad"
+          value={form.visibilidad}
+          onChange={handleChange}
+          className="w-full p-2 border rounded mb-6"
+        >
+          <option value="ocultos">Ocultos (solo admin)</option>
+          <option value="finalizar">Visibles al finalizar</option>
+          <option value="tiempo-real">Tiempo real (público)</option>
+        </select>
 
         {/* CANDIDATOS */}
         <h2 className="text-xl font-semibold mb-2">Candidatos</h2>
