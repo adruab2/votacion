@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function PanelVotacionesPage() {
   const navigate = useNavigate();
-  const { votaciones } = useVotaciones();
+  const { votaciones, eliminarVotacion } = useVotaciones();
 
   const getBadgeColor = (badge) => {
     switch (badge.toLowerCase()) {
@@ -25,6 +25,18 @@ export default function PanelVotacionesPage() {
     if (window.confirm("¿Estás seguro de que deseas cerrar sesión?")) {
       localStorage.removeItem("adminData");
       navigate("/admin/login");
+    }
+  };
+
+  // Función para eliminar votación
+  const handleEliminarVotacion = (votacionId, votacionTitulo) => {
+    if (
+      window.confirm(
+        `¿Estás seguro de que deseas eliminar la votación "${votacionTitulo}"? Esta acción no se puede deshacer.`
+      )
+    ) {
+      eliminarVotacion(votacionId);
+      alert("Votación eliminada correctamente");
     }
   };
 
@@ -257,6 +269,27 @@ export default function PanelVotacionesPage() {
                       />
                     </svg>
                     Editar
+                  </button>
+                  <button
+                    onClick={() =>
+                      handleEliminarVotacion(votacion.id, votacion.titulo)
+                    }
+                    className="cursor-pointer flex items-center justify-center gap-2 px-4 py-2 bg-white border border-red-300 rounded-lg text-red-600 hover:bg-red-50 transition text-sm"
+                  >
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                    Eliminar
                   </button>
                 </div>
               </div>

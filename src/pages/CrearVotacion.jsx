@@ -64,16 +64,18 @@ function CrearVotacion() {
   const validateStep3 = () => {
     const newErrors = {};
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     if (!formData.fechaInicio) {
       newErrors.fechaInicio = "La fecha de inicio es obligatoria";
     } else {
-      // Check if start date is in the past
-      const selectedStartDate = new Date(formData.fechaInicio);
-      if (selectedStartDate < today) {
+       // Comparar fecha y hora completas
+       const selectedStartDateTime = new Date(
+         `${formData.fechaInicio}T${formData.horaInicio || "00:00"}`
+       );
+     
+       if (selectedStartDateTime < now) {
         newErrors.fechaInicio =
-          "La fecha de inicio no puede ser anterior a hoy";
+           "La fecha y hora de inicio no pueden ser anteriores al momento actual";
       }
     }
 

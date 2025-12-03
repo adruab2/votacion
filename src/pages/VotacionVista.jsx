@@ -21,7 +21,24 @@ export default function VotacionVista() {
 
   const handleSelect = (votacionId, candidatoId) => {
     if (votadas[votacionId]) return; // si ya votó, no permite seleccionar
-    setSelectedVotes((prev) => ({ ...prev, [votacionId]: candidatoId }));
+    
+    const votacion = votaciones.find((v) => v.id === votacionId);
+    const tipoVotacion = votacion?.tipoVotacion || "unico";
+
+    if (tipoVotacion === "unico") {
+      // Voto único: solo un candidato
+      setSelectedVotes((prev) => ({ ...prev, [votacionId]: candidatoId }));
+    } else if (tipoVotacion === "multiple") {
+      // Voto múltiple: array de candidatos
+      setSelectedVotes((prev) => {
+        const current = prev[votacionId] || [];
+        const isSelected = current.includes(candidatoId);
+        const updated = isSelected
+          ? current.filter((id) => id !== candidatoId)
+          : [...current, candidatoId];
+        return { ...prev, [votacionId]: updated };
+      });
+    }
   };
 
   const handleSubmit = (votacionId) => {
@@ -31,12 +48,21 @@ export default function VotacionVista() {
     }
 
     const selected = selectedVotes[votacionId];
-    if (!selected) {
-      alert("Selecciona un candidato antes de enviar.");
+    if (!selected || (Array.isArray(selected) && selected.length === 0)) {
+      alert("Selecciona al menos un candidato antes de enviar.");
       return;
     }
 
-    registrarVoto(votacionId, selected);
+    // Registrar voto(s)
+    if (Array.isArray(selected)) {
+      // Múltiples votos
+      selected.forEach((candidatoId) => {
+        registrarVoto(votacionId, candidatoId);
+      });
+    } else {
+      // Un solo voto
+      registrarVoto(votacionId, selected);
+    }
 
     // marcar como votada (guardando específicamente para este usuario)
     const usuarioActual = JSON.parse(localStorage.getItem("userData"));
@@ -143,44 +169,99 @@ export default function VotacionVista() {
 
               {/* LISTA DE CANDIDATOS */}
               {votacion.candidatos && votacion.candidatos.length > 0 ? (
-                <div className="grid grid-cols-3 gap-6 mt-6">
-                  {votacion.candidatos.map((cand) => (
-                    <div
-                      key={cand.id}
-                      onClick={() => handleSelect(votacion.id, cand.id)}
-                      className={`flex flex-col items-center p-4 rounded-xl border cursor-pointer transition 
-                        ${
-                          selectedVotes[votacion.id] === cand.id
-                            ? "bg-blue-100 border-blue-500 border-2"
-                            : "bg-white border-gray-300 hover:border-blue-300"
-                        }
-                        ${votadas[votacion.id] ? "opacity-50 cursor-not-allowed" : ""}
-                      `}
-                    >
-                      {/* IMAGEN DEL CANDIDATO */}
-                      {cand.foto && (
-                        <img
-                          src={cand.foto}
-                          alt={cand.nombre}
-                          className="w-20 h-20 object-cover rounded-full mb-2"
-                        />
-                      )}
+                <>
+                  {votacion.tipoVotacion === "multiple" && (
+                    <p className="text-sm text-blue-600 mb-4 font-semibold">
+                      ℹ️ Puedes seleccionar múltiples candidatos
+                    </p>
+                  )}
+                  <div className="grid grid-cols-3 gap-6 mt-6">
+                    {votacion.candidatos.map((cand) => {
+                      const isSelected =
+                        votacion.tipoVotacion === "multiple"
+                          ? (selectedVotes[votacion.id] || []).includes(cand.id)
+                          : selectedVotes[votacion.id] === cand.id;
 
-                      {/* NOMBRE Y DESCRIPCIÓN */}
-                      <div className="text-gray-700 flex flex-col items-center text-center">
-                        <p className="font-bold">{cand.nombre}</p>
-                        <p className="text-sm text-gray-500">
-                          {cand.descripcion || "Candidato"}
-                        </p>
-                        {cand.votos && (
-                          <p className="text-xs text-gray-400 mt-2">
-                            {cand.votos} voto{cand.votos !== 1 ? "s" : ""}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      return (
+                        <div
+                          key={cand.id}
+                          onClick={() => handleSelect(votacion.id, cand.id)}
+                          className={`flex flex-col items-center p-4 rounded-xl border cursor-pointer transition 
+                            ${
+                              isSelected
+                                ? "bg-blue-100 border-blue-500 border-2"
+                                : "bg-white border-gray-300 hover:border-blue-300"
+                            }
+                            ${votadas[votacion.id] ? "opacity-50 cursor-not-allowed" : ""}
+                          `}
+                        >
+                          {/* CHECKBOX/RADIO INDICATOR */}
+                          <div className="mb-2">
+                            {votacion.tipoVotacion === "multiple" ? (
+                              <div
+                                className={`w-6 h-6 rounded border-2 flex items-center justify-center ${
+                                  isSelected
+                                    ? "bg-blue-500 border-blue-500"
+                                    : "border-gray-300"
+                                }`}
+                              >
+                                {isSelected && (
+                                  <svg
+                                    className="w-4 h-4 text-white"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={3}
+                                      d="M5 13l4 4L19 7"
+                                    />
+                                  </svg>
+                                )}
+                              </div>
+                            ) : (
+                              <div
+                                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                  isSelected
+                                    ? "bg-blue-500 border-blue-500"
+                                    : "border-gray-300"
+                                }`}
+                              >
+                                {isSelected && (
+                                  <div className="w-2 h-2 bg-white rounded-full"></div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* IMAGEN DEL CANDIDATO */}
+                          {cand.foto && (
+                            <img
+                              src={cand.foto}
+                              alt={cand.nombre}
+                              className="w-20 h-20 object-cover rounded-full mb-2"
+                            />
+                          )}
+
+                          {/* NOMBRE Y DESCRIPCIÓN */}
+                          <div className="text-gray-700 flex flex-col items-center text-center">
+                            <p className="font-bold">{cand.nombre}</p>
+                            <p className="text-sm text-gray-500">
+                              {cand.descripcion || "Candidato"}
+                            </p>
+                            {cand.votos && (
+                              <p className="text-xs text-gray-400 mt-2">
+                                {cand.votos} voto{cand.votos !== 1 ? "s" : ""}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
               ) : (
                 <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-6">
                   <p className="text-yellow-800">
