@@ -20,16 +20,18 @@ export default function VotacionVista() {
   }, []);
 
   const handleSelect = (votacionId, candidatoId) => {
-    if (votadas[votacionId]) return; // si ya votó, no permite seleccionar
-    
+    // Evitar selección si el usuario ya votó o la votación no permite votar
     const votacion = votaciones.find((v) => v.id === votacionId);
     const tipoVotacion = votacion?.tipoVotacion || "unico";
+    const usuarioYaVoto = !!votadas[votacionId];
+    const estaActiva = votacion?.estado === "activa";
+    const puedeVotar = estaActiva && !usuarioYaVoto;
+
+    if (!puedeVotar) return;
 
     if (tipoVotacion === "unico") {
-      // Voto único: solo un candidato
       setSelectedVotes((prev) => ({ ...prev, [votacionId]: candidatoId }));
     } else if (tipoVotacion === "multiple") {
-      // Voto múltiple: array de candidatos
       setSelectedVotes((prev) => {
         const current = prev[votacionId] || [];
         const isSelected = current.includes(candidatoId);
@@ -42,7 +44,16 @@ export default function VotacionVista() {
   };
 
   const handleSubmit = (votacionId) => {
-    if (votadas[votacionId]) {
+    const votacion = votaciones.find((v) => v.id === votacionId);
+    const usuarioYaVoto = !!votadas[votacionId];
+    const estaActiva = votacion?.estado === "activa";
+
+    if (!estaActiva) {
+      alert("La votación no está activa. No se puede enviar el voto.");
+      return;
+    }
+
+    if (usuarioYaVoto) {
       alert("Ya has votado en esta votación.");
       return;
     }
@@ -55,12 +66,10 @@ export default function VotacionVista() {
 
     // Registrar voto(s)
     if (Array.isArray(selected)) {
-      // Múltiples votos
       selected.forEach((candidatoId) => {
         registrarVoto(votacionId, candidatoId);
       });
     } else {
-      // Un solo voto
       registrarVoto(votacionId, selected);
     }
 
@@ -68,7 +77,7 @@ export default function VotacionVista() {
     const usuarioActual = JSON.parse(localStorage.getItem("userData"));
     const updatedVotadas = { ...votadas, [votacionId]: true };
     setVotadas(updatedVotadas);
-    
+
     if (usuarioActual && usuarioActual.dni) {
       const votosKey = `votos_${usuarioActual.dni}`;
       localStorage.setItem(votosKey, JSON.stringify(updatedVotadas));
@@ -177,6 +186,9 @@ export default function VotacionVista() {
                   )}
                   <div className="grid grid-cols-3 gap-6 mt-6">
                     {votacion.candidatos.map((cand) => {
+                      const usuarioYaVoto = !!votadas[votacion.id];
+                      const estaActiva = votacion.estado === "activa";
+                      const puedeVotar = estaActiva && !usuarioYaVoto;
                       const isSelected =
                         votacion.tipoVotacion === "multiple"
                           ? (selectedVotes[votacion.id] || []).includes(cand.id)
@@ -185,14 +197,14 @@ export default function VotacionVista() {
                       return (
                         <div
                           key={cand.id}
-                          onClick={() => handleSelect(votacion.id, cand.id)}
-                          className={`flex flex-col items-center p-4 rounded-xl border cursor-pointer transition 
+                          onClick={() => puedeVotar && handleSelect(votacion.id, cand.id)}
+                          className={`flex flex-col items-center p-4 rounded-xl border transition 
                             ${
                               isSelected
                                 ? "bg-blue-100 border-blue-500 border-2"
                                 : "bg-white border-gray-300 hover:border-blue-300"
                             }
-                            ${votadas[votacion.id] ? "opacity-50 cursor-not-allowed" : ""}
+                            ${!puedeVotar ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                           `}
                         >
                           {/* CHECKBOX/RADIO INDICATOR */}
@@ -274,13 +286,17 @@ export default function VotacionVista() {
             <button
               onClick={() => handleSubmit(votacion.id)}
               className={`px-8 py-2 rounded-full font-semibold mt-6 ${
-                votadas[votacion.id]
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-600"
+                votacion.estado === "activa" && !votadas[votacion.id]
+                  ? "bg-blue-500 text-white hover:bg-blue-600"
+                  : "bg-gray-400 text-white cursor-not-allowed"
               }`}
-              disabled={votadas[votacion.id]}
+              disabled={!(votacion.estado === "activa" && !votadas[votacion.id])}
             >
-              {votadas[votacion.id] ? "Votación completada" : "Enviar"}
+              {votacion.estado === "cerrada" && !votadas[votacion.id]
+                ? "Votación cerrada"
+                : votadas[votacion.id]
+                ? "Votación completada"
+                : "Enviar"}
             </button>
           </div>
         ))
